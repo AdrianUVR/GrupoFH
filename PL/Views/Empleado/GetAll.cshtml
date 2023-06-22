@@ -1,0 +1,58 @@
+﻿@model ML.Empleado
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>GetAll</h1>
+
+@Html.ActionLink("ADD", "Form", "Empleado", htmlAttributes: new { @class = "btn btn-success" })
+
+
+
+<div class="row">
+    @if (Model.Empleados != null)
+    {
+        //tabla
+        <table class="table  table-bordered table-responsive table-hover" id="tblPaciente">
+            <thead>
+                <tr>
+
+
+                    <td class="text-center" style=" font-weight:bold;">Actualizar</td>
+                    <td class="text-center" style=" font-weight:bold;">Nombre</td>
+                    <td class="text-center" style=" font-weight:bold;">Usuario</td>
+
+                    <td class="text-center" style=" font-weight:bold;">Email</td>
+                    <td class="text-center" style=" font-weight:bold;">Telefono</td>
+
+                    <td class="text-center" style=" font-weight:bold;">DELETE</td>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+                @foreach (ML.Empleado empleado in Model.Empleados)
+                {
+                    <tr>
+
+                        <td class="text-center"><a class="btn btn-success glyphicon " href="@Url.Action("Form", "Empleado", new { IdEmpleado  = empleado.IdEmpleado})"></a></td>
+                        <td>@empleado.NombreEmpleado </td>
+                        <td>@empleado.Usuario</td>
+                        <td>@empleado.Email</td>
+                        <td>@empleado.Telefono</td>
+
+                        <td class="text-center"><a class="btn btn-danger glyphicon glyphicon-trash" href="@Url.Action("Delete", "Empleado", new { IdEmpleado  = empleado.IdEmpleado})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"></a></td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">Ocurrio un error al realizar la consulta </div>
+    }
+
+</div>

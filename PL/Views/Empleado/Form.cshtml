@@ -1,0 +1,74 @@
+﻿@model ML.Empleado
+@{
+    ViewData["Title"] = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Form</h1>
+
+@using (Html.BeginForm("Form", "Empleado", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    
+        <div class="row">
+            <div class="col-md-1" style="display: none;">
+                @Html.TextBoxFor(model => model.IdEmpleado, new { @class = "hidden form-control", autocomplete = "off" })
+            </div>
+
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.NombreEmpleado, "Nombre Completo:")
+                <div class="input-group mb-2">
+                <span class="input-group-text"><i class="fa-solid fa-signature fa-flip"></i><i class="bi bi-controller"> <i class="bi bi-calendar2-check"></i>   </i></span>
+                @Html.TextBoxFor(model => model.NombreEmpleado, new { @class = "form-control",autocomplete = "off" })
+                @Html.ValidationMessageFor(model => model.NombreEmpleado, null, new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="col-md-3">
+            @Html.LabelFor(model => model.Usuario, "Usuario:")
+                <div class="input-group mb-2">
+                <span class="input-group-text"> <i class="fa-solid fa-user fa-beat"></i>  <i class="bi bi-controller"></i></span>
+                @Html.TextBoxFor(model => model.Usuario, new { @class = "form-control",autocomplete = "off" })
+                    @Html.ValidationMessageFor(model => model.Usuario, null, new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-3">
+            @Html.LabelFor(model => model.Password, "Password:")
+                <div class="input-group mb-2">
+                <span class="input-group-text"><i class="fa-solid fa-lock fa-beat"></i><i class="bi bi-controller"></i></span>
+                @Html.TextBoxFor(model => model.Password, new { @class = "form-control",autocomplete = "off" })
+                @Html.ValidationMessageFor(model => model.Password, null, new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+
+            <div class="col-md-3">
+            @Html.LabelFor(model => model.Email, "Email: ")
+                <div class="input-group mb-2">
+                <span class="input-group-text"><i class="fa-solid fa-envelope fa-spin fa-spin-reverse"></i><i class="bi bi-controller"></i></span>
+                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @id="txtFechaA" })
+                </div>
+            </div>
+
+            <div class="col-md-3">
+            @Html.LabelFor(model => model.Telefono, "Telefono:")
+                <div class="input-group mb-2">
+                <span class="input-group-text"><i class="fa-solid fa-square-phone fa-beat"></i><i class="bi bi-controller"></i></span>
+                @Html.TextBoxFor(model => model.Telefono, new { @class = "form-control",autocomplete = "off" })
+                @Html.ValidationMessageFor(model => model.Telefono, null, new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="glyphicon-up">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <input type="submit" value="Guardar" class="btn btn-success" />
+                        @Html.ActionLink("Regresar", "GetAll", "Paciente", htmlAttributes: new { @class = "btn btn-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        }

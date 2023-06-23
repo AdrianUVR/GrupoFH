@@ -4,10 +4,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>GetAllError</h1>
+<h1>Errores</h1>
 
-@Html.ActionLink("ADD", "Form", "Empleado", htmlAttributes: new { @class = "btn btn-success" })
+       @using (Html.BeginForm("FormTicket", "Ticket", FormMethod.Get, new { enctype = "multipart/form-data" }))
 
+{
+      <input type="submit" value="Agregar ticket" class="btn btn-success" />
+
+}
 
 
 <div class="row">
@@ -39,14 +43,14 @@
                 {
                     <tr>
 
-                        <td class="text-center"><a class="btn btn-success glyphicon " href="@Url.Action("Form", "Empleado", new { IdError  = error.IdError})"></a></td>
+                        <td class="text-center"><a class="btn btn-success glyphicon " href="@Url.Action("Form", "Error", new { IdError  = error.IdError})"></a></td>
                         <td>@error.DescripcionE </td>
                         <td>@error.Paso1</td>
                         <td>@error.Paso2</td>
                         <td>@error.Paso3</td>
                         <td>@error.Area.NombreArea</td>
 
-                        <td class="text-center"><a class="btn btn-danger glyphicon glyphicon-trash" href="@Url.Action("Delete", "Empleado", new { IdError  = error.IdError})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"></a></td>
+                        <td class="text-center"><a class="btn btn-danger glyphicon glyphicon-trash" href="@Url.Action("Delete", "Error", new { IdError  = error.IdError})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"></a></td>
 
                     </tr>
                 }

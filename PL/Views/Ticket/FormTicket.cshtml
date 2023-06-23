@@ -1,0 +1,71 @@
+﻿@model ML.Ticket
+@{
+    ViewData["Title"] = "FormTicket";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Agregue su ticket</h1>
+
+@using (Html.BeginForm("FormTicket", "Ticket", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="row">
+        <div class="col-md-1" style="display: none;">
+            @Html.TextBoxFor(model => model.IdTicket , new { @class = "hidden form-control", autocomplete = "off" })
+        </div>
+       
+            <div class="col-md-1" style="display: none;">
+                @Html.TextBoxFor(model => model.FechaAsignacion , new { @class = "hidden form-control", autocomplete = "off" })
+            </div>
+
+  
+
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Comentarios, "Comentarios:")
+            <div class="input-group mb-2">
+                <span class="input-group-text"> <i class="fa-solid fa-comment-dots fa-bounce"></i>  <i class="bi bi-controller"></i></span>
+                @Html.TextBoxFor(model => model.Comentarios, new { @class = "form-control",autocomplete = "off" })
+                @Html.ValidationMessageFor(model => model.Comentarios, null, new { @class = "text-danger" })
+            </div>
+        </div>
+    
+
+        <div class="form-group">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.Area)
+                @Html.DropDownListFor(model => model.Area.IdArea, new SelectList(Model.Area.Areas, "IdArea", "NombreArea"), "Seleccione un Area", new { @class = "form-control", @id = "ddlAutor" })
+            </div>
+        </div>
+            <div class="form-group">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.Error)
+                @Html.DropDownListFor(model => model.Error.IdError, new SelectList(Model.Error.Errores, "IdError", "DescripcionE"), "Seleccione un Error", new { @class = "form-control", @id = "ddlAutor" })
+            </div>
+        </div>
+             <div class="form-group">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.AsignadoA, "Asignado A:")
+                @Html.DropDownListFor(model => model.AsignadoA, new SelectList(Model.Empleado.Empleados, "IdEmpleado", "NombreEmpleado"), "A quien se le asigna", new { @class = "form-control", @id = "ddlAutor" })
+            </div>
+        </div>
+        @if (Model.IdTicket > 0)
+        {
+            <div class="form-group">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.CerradoPor, "Cerrado Por:")
+                    @Html.DropDownListFor(model => model.CerradoPor, new SelectList(Model.Empleado.Empleados, "IdEmpleado", "NombreEmpleado"), "A quien se le asigna", new { @class = "form-control", @id = "ddlAutor" })
+                </div>
+            </div>
+        }
+
+        <div class="glyphicon-up">
+            <div class="form-group">
+                <div class="col-md-3">
+                    <input type="submit" value="Guardar" class="btn btn-success" />
+                    @Html.ActionLink("Regresar", "GetAll", "Paciente", htmlAttributes: new { @class = "btn btn-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

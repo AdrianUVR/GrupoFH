@@ -40,7 +40,7 @@ namespace SL.Controllers
         }
 
         [HttpGet]
-        [Route("api/Empleado/GetAllByIdTicket/{IdTicket}")]
+        [Route("api/Ticket/GetAllByIdTicket/{IdTicket}")]
         public ActionResult GetById(int IdTicket)
         {
 

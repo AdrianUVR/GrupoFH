@@ -103,6 +103,10 @@ public partial class GrupoFh2Context : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("paso3");
+
+            entity.HasOne(d => d.IdAreaNavigation).WithMany(p => p.Errors)
+                .HasForeignKey(d => d.IdArea)
+                .HasConstraintName("FK__Error__IdArea__267ABA7A");
         });
 
         modelBuilder.Entity<Ticket>(entity =>

@@ -15,7 +15,10 @@ public partial class Error
 
     public string? Paso3 { get; set; }
 
+    public int? IdArea { get; set; }
+
+    public virtual Area? IdAreaNavigation { get; set; }
+
     public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
-    public int IdArea { get; set; }
     public string NombreArea { get; set; }
 }

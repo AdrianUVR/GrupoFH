@@ -4,23 +4,21 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>GetAllTicket</h1>
+<h1>Lista de tickets</h1>
 
 
-<table class="table table-hover table-dark table-striped table-bordered table-responsive" id="TablaTicket">
+<table class="table table-hover table-dark table-striped table-bordered table-responsive" id="tblTablaTicket">
     <thead>
         <tr class="table-secondary">
-            <td style="text-align:center">Asigando a</td>
-           
-               <td style="text-align:center">Comentarios</td>
+            <td style="text-align:center">Actualizar </td>
+            <td style="text-align:center">Asigando a</td>          
+            <td style="text-align:center">Comentarios</td>
             <td style="text-align:center">Fecha de asignacion </td>
             <td style="text-align:center">Area</td>
             <td style="text-align:center">Status</td>
             <td style="text-align:center">Cerrado por</td>
             <td style="text-align:center">Descripcion</td>
              
-   
-
         </tr>
     </thead>
 
@@ -28,8 +26,8 @@
         @foreach (ML.Ticket ticket in Model.Tickets)
         {
             <tr>
-                <td class="text-center"><a class="btn btn-success glyphicon " href="@Url.Action("FormTicket", "Ticket", new { IdTicket  = ticket.IdTicket})"></a></td>
-                <td style="text-align:center">@ticket.AsignadoA @ticket.Empleado.NombreEmpleado</td>
+                <td class="text-center"><a class="btn btn-success bi bi-pencil-fill" href="@Url.Action("FormTicket", "Ticket", new { IdTicket  = ticket.IdTicket})"></a></td>
+                <td style="text-align:center">@ticket.Asignado </td>
               
                 <td style="text-align:center">@ticket.Comentarios</td>
                 <td style="text-align:center">@ticket.FechaAsignacion</td>
@@ -54,7 +52,7 @@
                         </div>
                     </td>
                 }
-                <td style="text-align:center">@ticket.CerradoPor @ticket.Empleado.NombreEmpleado </td>
+                <td style="text-align:center">@ticket.Cerrado </td>
                  <td style="text-align:center">@ticket.Error.DescripcionE</td>
 
                 
@@ -72,7 +70,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#TablaTicket').DataTable({
+            $('#tblTablaTicket').DataTable({
                 searching: true,
                 "lengthMenu": [[5, 10, 15, 20, -1], [5, 10, 15, 20, "All"]],
                 autoWidth: false,

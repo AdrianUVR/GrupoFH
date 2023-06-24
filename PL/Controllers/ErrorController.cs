@@ -60,6 +60,14 @@ namespace PL.Controllers
         public ActionResult Form(int? IdError)
         {
             ML.Error error = new ML.Error();
+            ML.Result resultArea = BL.Area.GetAllArea();
+            error.Area = new ML.Area();
+
+
+            if (resultArea.Correct)
+            {
+                error.Area.Areas = resultArea.Objects;
+            }
 
 
 
@@ -106,7 +114,7 @@ namespace PL.Controllers
                 }
                 else
                 {
-                    ViewBag.Message = "Ocurrio algo al consultar la informacion del Paciente" + result.ErrorMessage;
+                    ViewBag.Message = "Ocurrio algo al consultar la informacion del Error" + result.ErrorMessage;
                     return View("Modal");
                 }
             }
@@ -136,12 +144,12 @@ namespace PL.Controllers
                     var result = postTask.Result;
                     if (result.IsSuccessStatusCode)
                     {
-                        ViewBag.Message = "Se registro el IdError";
+                        ViewBag.Message = "Se registro el Error";
                         return PartialView("Modal");
                     }
                     else
                     {
-                        ViewBag.Message = "No se ha registrado el Paciente";
+                        ViewBag.Message = "No se ha registrado el Error";
                         return PartialView("Modal");
                     }
 
@@ -151,18 +159,18 @@ namespace PL.Controllers
                     client.BaseAddress = new Uri(_configuration["urlApi"]);
 
                     //HTTP POST
-                    var postTask = client.PostAsJsonAsync<ML.Error>("Departamento/Update/", error);
+                    var postTask = client.PostAsJsonAsync<ML.Error>("Error/Update/", error);
                     postTask.Wait();
 
                     var result = postTask.Result;
                     if (result.IsSuccessStatusCode)
                     {
-                        ViewBag.Message = "Se ha actualizado el Paciente";
+                        ViewBag.Message = "Se ha actualizado el Error";
                         return PartialView("Modal");
                     }
                     else
                     {
-                        ViewBag.Message = "No se ha registrado el Paciente";
+                        ViewBag.Message = "No se ha registrado el Error";
                         return PartialView("Modal");
                     }
 
@@ -173,27 +181,18 @@ namespace PL.Controllers
         [HttpGet]
         public ActionResult Delete(int IdError)
         {
-
-
-            using (var client = new HttpClient())
+            ML.Error error = new ML.Error();
+            error.IdError = IdError;
+            ML.Result resultDelete = BL.Error.Delete(IdError);
+            if (resultDelete.Correct == true)
             {
-                client.BaseAddress = new Uri(_configuration["UrlApi"]);
-
-                var postTask = client.GetAsync("Error/Delete/" + IdError);
-                postTask.Wait();
-
-                var result = postTask.Result;
-
-                if (result.IsSuccessStatusCode)
-                {
-                    ViewBag.Message = "Se ha eliminado el libro";
-                    return PartialView("Modal");
-                }
-                else
-                {
-                    ViewBag.Message = "No se ha eliminado el libro";
-                    return PartialView("Modal");
-                }
+                ViewBag.Message = "Se ha eliminado el Error";
+                return PartialView("Modal");
+            }
+            else
+            {
+                ViewBag.Message = "ocurrio un error";
+                return PartialView("Modal");
             }
         }
     }

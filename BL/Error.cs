@@ -33,7 +33,7 @@ namespace BL
                             error.Paso2 = obj.Paso2;
                             error.Paso3 = obj.Paso3;
                             error.Area=new ML.Area();
-                            error.Area.IdArea = obj.IdArea;
+                            error.Area.IdArea = (int)obj.IdArea;
                             error.Area.NombreArea = obj.NombreArea;
                             result.Objects.Add(error);
 
@@ -167,7 +167,7 @@ namespace BL
                         error.Paso2 = query.Paso2;
                         error.Paso3 = query.Paso3;
                         error.Area = new ML.Area();
-                        error.Area.IdArea = query.IdArea;
+                        error.Area.IdArea = (int)query.IdArea;
                         error.Area.NombreArea = query.NombreArea;   
 
                         resultById.Object = error;

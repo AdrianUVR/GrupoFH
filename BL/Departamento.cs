@@ -67,7 +67,7 @@ namespace BL
                 using (DL.GrupoFh2Context context = new DL.GrupoFh2Context())
                 {
 
-                    var query = context.Database.ExecuteSqlRaw($"[AddDepartamento]  '{departamento.NombreDepartamento}','{departamento.DescripcionD}'");
+                    var query = context.Database.ExecuteSqlRaw($"[AddDepartamento]  '{departamento.NombreDepartamento}','{departamento.DescripcionD}',{departamento.Area.IdArea}");
 
                     if (query >= 1)
                     {

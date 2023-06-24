@@ -28,6 +28,9 @@ namespace ML
 
         public ML.Area Area { get; set; }
 
+        public string Asignado { get; set; }
+
         public List<object> Tickets { get; set; }
+        public string Cerrado { get; set; }
     }
 }

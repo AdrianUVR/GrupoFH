@@ -11,5 +11,7 @@ public partial class Area
 
     public virtual ICollection<Departamento> Departamentos { get; set; } = new List<Departamento>();
 
+    public virtual ICollection<Error> Errors { get; set; } = new List<Error>();
+
     public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 }

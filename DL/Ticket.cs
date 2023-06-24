@@ -30,6 +30,6 @@ public partial class Ticket
     public virtual Error? IdErrorNavigation { get; set; }
     public string NombreArea { get; set; }
     public string DescripcionE { get; set; }
-    public int IdEmpleado { get; set; }
-    public string NombreEmpleado { get; set; }
+    public string Asignado { get; set; }
+    public string Cerrado { get; set; }
 }

@@ -18,8 +18,6 @@
                 @Html.TextBoxFor(model => model.FechaAsignacion , new { @class = "hidden form-control", autocomplete = "off" })
             </div>
 
-  
-
         <div class="col-md-3">
             @Html.LabelFor(model => model.Comentarios, "Comentarios:")
             <div class="input-group mb-2">
@@ -56,13 +54,14 @@
                     @Html.DropDownListFor(model => model.CerradoPor, new SelectList(Model.Empleado.Empleados, "IdEmpleado", "NombreEmpleado"), "A quien se le asigna", new { @class = "form-control", @id = "ddlAutor" })
                 </div>
             </div>
+
         }
 
         <div class="glyphicon-up">
             <div class="form-group">
                 <div class="col-md-3">
                     <input type="submit" value="Guardar" class="btn btn-success" />
-                    @Html.ActionLink("Regresar", "GetAll", "Paciente", htmlAttributes: new { @class = "btn btn-danger" })
+                    @Html.ActionLink("Regresar", "GetAllTicket", "Ticket", htmlAttributes: new { @class = "btn btn-danger" })
                 </div>
             </div>
         </div>

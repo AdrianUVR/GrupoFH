@@ -126,6 +126,13 @@ namespace PL.Controllers
                 if (result.Correct)
                 {
                     ticket = (ML.Ticket)result.Object;
+                    ticket.Area.Areas = resultArea.Objects;
+                    ticket.Error.Errores = resultError.Objects;
+                    ticket.Empleado = new ML.Empleado();
+                    ticket.Empleado.Empleados = resultEmpleado.Objects;
+
+
+
 
 
 
@@ -141,6 +148,8 @@ namespace PL.Controllers
             {
                 return View(ticket);
             }
+
+
         }
 
         [HttpPost]

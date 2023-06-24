@@ -108,7 +108,7 @@ namespace PL.Controllers
                 }
                 else
                 {
-                    ViewBag.Message = "Ocurrio algo al consultar la informacion del Paciente" + result.ErrorMessage;
+                    ViewBag.Message = "Ocurrio algo al consultar la informacion del Empleado";
                     return View("Modal");
                 }
             }
@@ -132,7 +132,7 @@ namespace PL.Controllers
                     client.BaseAddress = new Uri(_configuration["urlApi"]);
 
                     //HTTP POST
-                    var postTask = client.PostAsJsonAsync<ML.Empleado>("Paciente/Add", empleado);
+                    var postTask = client.PostAsJsonAsync<ML.Empleado>("Empleado/Add", empleado);
                     postTask.Wait();
 
                     var result = postTask.Result;
@@ -143,7 +143,7 @@ namespace PL.Controllers
                     }
                     else
                     {
-                        ViewBag.Message = "No se ha registrado el Paciente";
+                        ViewBag.Message = "No se ha registrado el empleado";
                         return PartialView("Modal");
                     }
 
@@ -159,12 +159,12 @@ namespace PL.Controllers
                     var result = postTask.Result;
                     if (result.IsSuccessStatusCode)
                     {
-                        ViewBag.Message = "Se ha actualizado el Paciente";
+                        ViewBag.Message = "Se ha actualizado el empleado";
                         return PartialView("Modal");
                     }
                     else
                     {
-                        ViewBag.Message = "No se ha registrado el Paciente";
+                        ViewBag.Message = "No se ha registrado el empleado";
                         return PartialView("Modal");
                     }
 
@@ -178,18 +178,15 @@ namespace PL.Controllers
         {
             ML.Empleado empleado = new ML.Empleado();
             empleado.IdEmpleado = IdEmpleado;
-
-
-
             ML.Result resultDelete = BL.Empleado.Delete(IdEmpleado);
             if (resultDelete.Correct == true)
             {
-                ViewBag.Message = "Registration has been removed";
+                ViewBag.Message = "Se elimino el registro";
                 return PartialView("Modal");
             }
             else
             {
-                ViewBag.Message = "Record not deleted";
+                ViewBag.Message = "ocurrio un error al eliminar";
                 return PartialView("Modal");
             }
         }

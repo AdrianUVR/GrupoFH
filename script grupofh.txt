@@ -1,0 +1,587 @@
+USE [GrupoFH2]
+GO
+/****** Object:  StoredProcedure [dbo].[AddDepartamento]    Script Date: 6/23/2023 5:43:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[AddDepartamento]
+@NombreDepartamento VARCHAR (100),
+@DescripcionD VARCHAR (100)
+AS
+INSERT Departamento
+(
+NombreDepartamento,
+DescripcionD
+)
+VALUES 
+(
+@NombreDepartamento ,
+@DescripcionD 
+
+)
+GO
+/****** Object:  StoredProcedure [dbo].[AddEmpleado]    Script Date: 6/23/2023 5:43:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[AddEmpleado] 
+@NombreEmpleado VARCHAR (100),
+@Usuario VARCHAR (100),
+@Password VARCHAR (100),
+@Email VARCHAR (100),
+@Telefono VARCHAR (100)
+AS
+INSERT Empleado
+(
+NombreEmpleado,
+Usuario,
+Password,
+Email,
+Telefono
+)
+VALUES
+(
+@NombreEmpleado ,
+@Usuario ,
+@Password,
+@Email ,
+@Telefono 
+) 
+GO
+/****** Object:  StoredProcedure [dbo].[AddError]    Script Date: 6/23/2023 5:43:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[AddError]
+@DescripcionE VARCHAR (100),
+@Paso1 VARCHAR (100),
+@Paso2 VARCHAR (100),
+@Paso3 VARCHAR (100),
+@IdArea int 
+AS
+INSERT Error
+(
+DescripcionE,
+Paso1,
+paso2,
+paso3,
+IdArea
+
+)
+VALUES
+(@DescripcionE,
+@Paso1,
+@Paso2,
+@Paso3,
+@IdArea
+ 
+) 
+
+GO
+/****** Object:  StoredProcedure [dbo].[AddTicket]    Script Date: 6/23/2023 5:43:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[AddTicket] 
+@AsignadoA int ,
+@Comentarios VARCHAR (100),
+@FechaAsignacion VARCHAR ,
+@IdArea int ,
+
+@IdError int
+
+AS
+INSERT Ticket
+(
+AsignadoA,
+Comentarios,
+FechaAsignacion,
+IdArea,
+Status,
+IdError,
+CerradoPor
+)
+VALUES
+(
+@AsignadoA,
+@Comentarios,
+GETDATE(),
+@IdArea,
+1,
+@IdError,
+@AsignadoA
+
+) 
+GO
+/****** Object:  StoredProcedure [dbo].[DeleteDepartamento]    Script Date: 6/23/2023 5:43:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[DeleteDepartamento] 
+@IdDepartamento int
+AS
+DELETE Departamento 
+WHERE IdDepartamento=@IdDepartamento
+GO
+/****** Object:  StoredProcedure [dbo].[DeleteEmpleado]    Script Date: 6/23/2023 5:43:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[DeleteEmpleado]
+@IdEmpleado INT 
+AS
+DELETE Empleado
+WHERE IdEmpleado=@IdEmpleado
+GO
+/****** Object:  StoredProcedure [dbo].[DeleteError]    Script Date: 6/23/2023 5:43:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[DeleteError]
+@IdError int 
+AS
+DELETE Error
+WHERE IdError=@IdError
+GO
+/****** Object:  StoredProcedure [dbo].[GetArea]    Script Date: 6/23/2023 5:43:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[GetArea]
+AS
+SELECT
+IdArea,
+NombreArea
+FROM Area
+
+GO
+/****** Object:  StoredProcedure [dbo].[GetByIdDepartamento]    Script Date: 6/23/2023 5:43:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[GetByIdDepartamento] 
+@IdDepartamento int 
+AS
+SELECT  
+IdDepartamento,
+NombreDepartamento,
+DescripcionD,
+Area.IdArea,
+Area.NombreArea
+
+FROM Departamento
+INNER JOIN Area ON Departamento.IdArea=Area.IdArea
+WHERE IdDepartamento=@IdDepartamento
+GO
+/****** Object:  StoredProcedure [dbo].[GetByIdEmpleado]    Script Date: 6/23/2023 5:43:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[GetByIdEmpleado] 
+@IdEmpleado int
+AS 
+SELECT 
+IdEmpleado,
+NombreEmpleado,
+Usuario,
+Password,
+Email,
+Telefono
+FROM Empleado
+WHERE IdEmpleado=@IdEmpleado
+GO
+/****** Object:  StoredProcedure [dbo].[GetByIdError]    Script Date: 6/23/2023 5:43:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[GetByIdError]
+@IdError int 
+AS
+SELECT 
+IdError,
+DescripcionE,
+Paso1,
+paso2,
+paso3,
+Area.IdArea,
+Area.NombreArea
+
+FROM Error
+INNER JOIN Area ON Error.IdArea=Area.IdArea
+
+where IdError=@IdError
+GO
+/****** Object:  StoredProcedure [dbo].[GetByIdTicket]    Script Date: 6/23/2023 5:43:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[GetByIdTicket]
+
+@IdTicket int
+AS
+SELECT T.[IdTicket]
+      ,T.[AsignadoA]
+	  ,Asignado.NombreEmpleado AS Asignado
+      ,T.[CerradoPor] 
+	  ,Cerrado.NombreEmpleado AS Cerrado
+      ,T.[Comentarios]
+      ,T.[FechaAsignacion]
+      ,T.[IdArea]
+	  ,Area.NombreArea
+      ,T.[Status]
+      ,T.[IdError]
+	  ,Error.DescripcionE
+  FROM [Ticket] AS T
+  INNER JOIN Empleado AS Asignado ON T.AsignadoA = Asignado.IdEmpleado
+  INNER JOIN Empleado AS Cerrado ON T.CerradoPor = Cerrado.IdEmpleado
+  INNER JOIN Area ON T.IdArea = Area.IdArea
+  INNER JOIN Error ON T.IdError = Error.IdError
+  where IdTicket=@IdTicket
+GO
+/****** Object:  StoredProcedure [dbo].[GetDepartamento]    Script Date: 6/23/2023 5:43:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[GetDepartamento] 
+AS
+SELECT  
+IdDepartamento,
+NombreDepartamento,
+DescripcionD,
+Area.IdArea,
+Area.NombreArea
+
+FROM Departamento
+INNER JOIN Area ON Departamento.IdArea=Area.IdArea
+GO
+/****** Object:  StoredProcedure [dbo].[GetEmpleado]    Script Date: 6/23/2023 5:43:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[GetEmpleado] 
+AS
+SELECT 
+IdEmpleado,
+NombreEmpleado,
+Usuario,
+Password,
+Email,
+Telefono
+FROM Empleado
+GO
+/****** Object:  StoredProcedure [dbo].[GetError]    Script Date: 6/23/2023 5:43:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[GetError]
+AS
+SELECT 
+IdError,
+DescripcionE,
+Paso1,
+paso2,
+paso3,
+Area.IdArea,
+Area.NombreArea
+
+FROM Error
+INNER JOIN Area ON Error.IdArea=Area.IdArea
+GO
+/****** Object:  StoredProcedure [dbo].[GetTicket]    Script Date: 6/23/2023 5:43:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[GetTicket]
+AS
+SELECT T.[IdTicket]
+      ,T.[AsignadoA]
+	  ,Asignado.NombreEmpleado AS Asignado
+      ,T.[CerradoPor] 
+	  ,Cerrado.NombreEmpleado AS Cerrado
+      ,T.[Comentarios]
+      ,T.[FechaAsignacion]
+      ,T.[IdArea]
+	  ,Area.NombreArea
+      ,T.[Status]
+      ,T.[IdError]
+	  ,Error.DescripcionE
+  FROM [Ticket] AS T
+  INNER JOIN Empleado AS Asignado ON T.AsignadoA = Asignado.IdEmpleado
+  INNER JOIN Empleado AS Cerrado ON T.CerradoPor = Cerrado.IdEmpleado
+  INNER JOIN Area ON T.IdArea = Area.IdArea
+  INNER JOIN Error ON T.IdError = Error.IdError
+GO
+/****** Object:  StoredProcedure [dbo].[UpdateDepartamento]    Script Date: 6/23/2023 5:43:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[UpdateDepartamento] 
+@IdDepartamento int,
+@NombreDepartamento VARCHAR (100),
+@DescripcionD VARCHAR (100)
+AS
+Update Departamento
+SET NombreDepartamento=@NombreDepartamento,
+DescripcionD=@DescripcionD
+WHERE IdDepartamento=@IdDepartamento
+GO
+/****** Object:  StoredProcedure [dbo].[UpdateEmpleado]    Script Date: 6/23/2023 5:43:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[UpdateEmpleado] 
+@IdEmpleado int,
+@NombreEmpleado VARCHAR (100),
+@Usuario VARCHAR (100),
+@Password VARCHAR (100),
+@Email VARCHAR (100),
+@Telefono VARCHAR (100)
+AS
+UPDATE Empleado 
+SET 
+NombreEmpleado=@NombreEmpleado,
+Usuario=@Usuario,
+Password=@Password,
+Email=@Email,
+Telefono=@Telefono
+
+WHERE IdEmpleado=@IdEmpleado
+GO
+/****** Object:  StoredProcedure [dbo].[UpdateError]    Script Date: 6/23/2023 5:43:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[UpdateError]
+@IdError int ,
+@DescripcionE VARCHAR (100),
+@Paso1 VARCHAR (100),
+@Paso2 VARCHAR (100),
+@Paso3 VARCHAR (100),
+@IdArea int
+AS
+UPDATE Error
+SET
+DescripcionE=@DescripcionE,
+Paso1=@Paso1,
+paso2=@Paso2,
+paso3=@Paso3,
+IdArea=@IdArea
+WHERE IdError=@IdError
+GO
+/****** Object:  StoredProcedure [dbo].[UpdateTicket]    Script Date: 6/23/2023 5:43:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[UpdateTicket] 
+@IdTicket int,
+@AsignadoA int ,
+@Comentarios VARCHAR (100),
+
+@IdArea int ,
+@CerradoPor int,
+@IdError int
+
+AS
+Update Ticket
+set
+ AsignadoA =@AsignadoA,
+Comentarios=@Comentarios,
+
+IdArea=@IdArea,
+
+IdError=@IdError,
+CerradoPor=@CerradoPor
+where IdTicket=@IdTicket
+GO
+/****** Object:  Table [dbo].[Area]    Script Date: 6/23/2023 5:43:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[Area](
+	[IdArea] [int] IDENTITY(1,1) NOT NULL,
+	[NombreArea] [varchar](100) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[IdArea] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[Departamento]    Script Date: 6/23/2023 5:43:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[Departamento](
+	[IdDepartamento] [int] IDENTITY(1,1) NOT NULL,
+	[NombreDepartamento] [varchar](100) NULL,
+	[DescripcionD] [varchar](100) NULL,
+	[IdArea] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[IdDepartamento] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[Empleado]    Script Date: 6/23/2023 5:43:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[Empleado](
+	[IdEmpleado] [int] IDENTITY(1,1) NOT NULL,
+	[NombreEmpleado] [varchar](100) NULL,
+	[Usuario] [varchar](100) NULL,
+	[Password] [varchar](100) NULL,
+	[Email] [varchar](100) NULL,
+	[Telefono] [varchar](100) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[IdEmpleado] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[Error]    Script Date: 6/23/2023 5:43:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[Error](
+	[IdError] [int] IDENTITY(1,1) NOT NULL,
+	[DescripcionE] [varchar](100) NULL,
+	[Paso1] [varchar](100) NULL,
+	[paso2] [varchar](100) NULL,
+	[paso3] [varchar](100) NULL,
+	[IdArea] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[IdError] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[Ticket]    Script Date: 6/23/2023 5:43:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[Ticket](
+	[IdTicket] [int] IDENTITY(1,1) NOT NULL,
+	[AsignadoA] [int] NULL,
+	[CerradoPor] [int] NULL,
+	[Comentarios] [varchar](100) NULL,
+	[FechaAsignacion] [datetime] NULL,
+	[IdArea] [int] NULL,
+	[Status] [bit] NULL,
+	[IdError] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[IdTicket] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+SET IDENTITY_INSERT [dbo].[Area] ON 
+
+INSERT [dbo].[Area] ([IdArea], [NombreArea]) VALUES (1, N'RH')
+INSERT [dbo].[Area] ([IdArea], [NombreArea]) VALUES (2, N'Sistemas')
+INSERT [dbo].[Area] ([IdArea], [NombreArea]) VALUES (3, N'Transporte')
+INSERT [dbo].[Area] ([IdArea], [NombreArea]) VALUES (4, N'Produccion')
+INSERT [dbo].[Area] ([IdArea], [NombreArea]) VALUES (5, N'Finanzas')
+SET IDENTITY_INSERT [dbo].[Area] OFF
+SET IDENTITY_INSERT [dbo].[Departamento] ON 
+
+INSERT [dbo].[Departamento] ([IdDepartamento], [NombreDepartamento], [DescripcionD], [IdArea]) VALUES (1, N'RH', N'Recursos Humanos', 1)
+INSERT [dbo].[Departamento] ([IdDepartamento], [NombreDepartamento], [DescripcionD], [IdArea]) VALUES (2, N'Desarrollo', N'Departamento encargado de desarrollo movil', 2)
+INSERT [dbo].[Departamento] ([IdDepartamento], [NombreDepartamento], [DescripcionD], [IdArea]) VALUES (3, N'Contaduria', N'Departamento de Contaduria', 5)
+INSERT [dbo].[Departamento] ([IdDepartamento], [NombreDepartamento], [DescripcionD], [IdArea]) VALUES (4, N'Limpieza', N'Departamento de limpieza', 4)
+INSERT [dbo].[Departamento] ([IdDepartamento], [NombreDepartamento], [DescripcionD], [IdArea]) VALUES (5, N'Transporte', N'Departamento de transporte', 3)
+SET IDENTITY_INSERT [dbo].[Departamento] OFF
+SET IDENTITY_INSERT [dbo].[Empleado] ON 
+
+INSERT [dbo].[Empleado] ([IdEmpleado], [NombreEmpleado], [Usuario], [Password], [Email], [Telefono]) VALUES (1, N'Adrian Uriel Vargas Ramirez', N'AdrianVR', N'Pass123', N'a-u-vr@gmail.com', N'5575156009')
+INSERT [dbo].[Empleado] ([IdEmpleado], [NombreEmpleado], [Usuario], [Password], [Email], [Telefono]) VALUES (3, N'Leonardo Buendia', N'LeoBD', N'123Pass', N'LeoBN@hotmail.com', N'5575896325')
+INSERT [dbo].[Empleado] ([IdEmpleado], [NombreEmpleado], [Usuario], [Password], [Email], [Telefono]) VALUES (4, N'Isaac Lopez Espinoza', N'IsaacLE', N'Contra123', N'Issac@gmail.com', N'5548796589')
+INSERT [dbo].[Empleado] ([IdEmpleado], [NombreEmpleado], [Usuario], [Password], [Email], [Telefono]) VALUES (5, N'Jesus Lopez Delgadillo', N'JesusLD', N'Jesus123', N'Jesus@gmail.com', N'5544887799')
+SET IDENTITY_INSERT [dbo].[Empleado] OFF
+SET IDENTITY_INSERT [dbo].[Error] ON 
+
+INSERT [dbo].[Error] ([IdError], [DescripcionE], [Paso1], [paso2], [paso3], [IdArea]) VALUES (1, N'Error de monitor', N'Verificar Instrumentos', N'Dar Mantenimiento al Instrumento', N'Cambiar Instrumento', 1)
+INSERT [dbo].[Error] ([IdError], [DescripcionE], [Paso1], [paso2], [paso3], [IdArea]) VALUES (2, N'Error de Equipo de computo', N'Verificar el fallo', N'Dar mantenimiento completo', N'Cambiar eqipo', 2)
+INSERT [dbo].[Error] ([IdError], [DescripcionE], [Paso1], [paso2], [paso3], [IdArea]) VALUES (3, N'Error de perifericos', N'Ver que periferico esta dañado', N'Mantenimiento', N'Cambio', 2)
+SET IDENTITY_INSERT [dbo].[Error] OFF
+SET IDENTITY_INSERT [dbo].[Ticket] ON 
+
+INSERT [dbo].[Ticket] ([IdTicket], [AsignadoA], [CerradoPor], [Comentarios], [FechaAsignacion], [IdArea], [Status], [IdError]) VALUES (2, 5, 5, N'Se le dara mantenimiento al equipo dañado', CAST(0x0000B02800000000 AS DateTime), 4, 1, 2)
+INSERT [dbo].[Ticket] ([IdTicket], [AsignadoA], [CerradoPor], [Comentarios], [FechaAsignacion], [IdArea], [Status], [IdError]) VALUES (3, 3, 1, N'El usuario comenta que no funciona por que se le cayo liquido ', CAST(0x0000B02800000000 AS DateTime), 1, 0, 2)
+INSERT [dbo].[Ticket] ([IdTicket], [AsignadoA], [CerradoPor], [Comentarios], [FechaAsignacion], [IdArea], [Status], [IdError]) VALUES (6, 1, 1, N'El monitor dejode dar imagen, posible falla de hdmi', CAST(0x0000B029013C9C73 AS DateTime), 2, 1, 1)
+INSERT [dbo].[Ticket] ([IdTicket], [AsignadoA], [CerradoPor], [Comentarios], [FechaAsignacion], [IdArea], [Status], [IdError]) VALUES (7, 1, 1, N'Error en el vehiculo, falla de motor', CAST(0x0000B02A00ADF7AE AS DateTime), 3, 1, 3)
+SET IDENTITY_INSERT [dbo].[Ticket] OFF
+ALTER TABLE [dbo].[Departamento]  WITH CHECK ADD FOREIGN KEY([IdArea])
+REFERENCES [dbo].[Area] ([IdArea])
+GO
+ALTER TABLE [dbo].[Error]  WITH CHECK ADD FOREIGN KEY([IdArea])
+REFERENCES [dbo].[Area] ([IdArea])
+GO
+ALTER TABLE [dbo].[Ticket]  WITH CHECK ADD FOREIGN KEY([AsignadoA])
+REFERENCES [dbo].[Empleado] ([IdEmpleado])
+GO
+ALTER TABLE [dbo].[Ticket]  WITH CHECK ADD FOREIGN KEY([CerradoPor])
+REFERENCES [dbo].[Empleado] ([IdEmpleado])
+GO
+ALTER TABLE [dbo].[Ticket]  WITH CHECK ADD FOREIGN KEY([IdArea])
+REFERENCES [dbo].[Area] ([IdArea])
+GO
+ALTER TABLE [dbo].[Ticket]  WITH CHECK ADD FOREIGN KEY([IdError])
+REFERENCES [dbo].[Error] ([IdError])
+GO

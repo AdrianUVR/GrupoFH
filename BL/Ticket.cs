@@ -30,8 +30,8 @@ namespace BL
                             ML.Ticket ticket = new ML.Ticket();
 
                             ticket.IdTicket = obj.IdTicket;
-                            ticket.AsignadoA = (int)obj.AsignadoA;
-                            ticket.CerradoPor = (int)obj.CerradoPor;
+                            ticket.Asignado = obj.Asignado;
+                            ticket.Cerrado =obj.Cerrado ;
                             ticket.Comentarios = obj.Comentarios;
                             ticket.FechaAsignacion = obj.FechaAsignacion.ToString();
                             ticket.Status = (bool)obj.Status;
@@ -42,9 +42,7 @@ namespace BL
                             ticket.Error.IdError = (int)obj.IdError;
                             ticket.Error.DescripcionE = obj.DescripcionE;
 
-                            ticket.Empleado = new ML.Empleado();
-                            ticket.Empleado.IdEmpleado = obj.IdEmpleado;
-                            ticket.Empleado.NombreEmpleado = obj.NombreEmpleado;
+                         
 
                             result.Objects.Add(ticket);
 
@@ -101,15 +99,7 @@ namespace BL
                             ticket.Status = (bool)obj.Status;
 
 
-                            ticket.Area = new ML.Area();
-                            ticket.Area.IdArea = (int)obj.IdArea;
-                            ticket.Area.NombreArea = obj.NombreArea;
-                            
-                            
-                            ticket.Error=new ML.Error();
-                            ticket.Error.IdError = (int)obj.Error;
-                            ticket.Error.DescripcionE = obj.DescripcionE;
-
+                    
 
 
 
@@ -182,19 +172,19 @@ namespace BL
                     if (query != null)
                     {
                         ML.Ticket ticket = new ML.Ticket();
+                 
+
+
+
                         ticket.IdTicket = query.IdTicket;
-                        ticket.AsignadoA = (int)query.AsignadoA;
-                        ticket.CerradoPor = (int)query.CerradoPor;
+                        ticket.Asignado = query.Asignado;
+                        ticket.Cerrado = query.Cerrado;
                         ticket.Comentarios = query.Comentarios;
-                        ticket.FechaAsignacion = query.FechaAsignacion.Value.ToString();
+                        ticket.FechaAsignacion = query.FechaAsignacion.ToString();
                         ticket.Status = (bool)query.Status;
-
-
                         ticket.Area = new ML.Area();
                         ticket.Area.IdArea = (int)query.IdArea;
                         ticket.Area.NombreArea = query.NombreArea;
-
-
                         ticket.Error = new ML.Error();
                         ticket.Error.IdError = (int)query.IdError;
                         ticket.Error.DescripcionE = query.DescripcionE;

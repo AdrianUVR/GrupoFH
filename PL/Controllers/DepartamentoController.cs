@@ -62,7 +62,14 @@ namespace PL.Controllers
         {
             ML.Departamento departamento = new ML.Departamento();
 
+            ML.Result resultArea = BL.Area.GetAllArea();
+            departamento.Area = new ML.Area();
 
+
+            if (resultArea.Correct)
+            {
+                departamento.Area.Areas = resultArea.Objects;
+            }
 
             if (IdDepartamento != null)
             {
@@ -103,11 +110,18 @@ namespace PL.Controllers
                 if (result.Correct)
                 {
                     departamento = (ML.Departamento)result.Object;
+                    departamento.Area = new ML.Area();
+
+
+                    if (resultArea.Correct)
+                    {
+                        departamento.Area.Areas = resultArea.Objects;
+                    }
                     return View(departamento);
                 }
                 else
                 {
-                    ViewBag.Message = "Ocurrio algo al consultar la informacion del Paciente" + result.ErrorMessage;
+                    ViewBag.Message = "Ocurrio algo al consultar la informacion del Departamento" + result.ErrorMessage;
                     return View("Modal");
                 }
             }
@@ -137,12 +151,12 @@ namespace PL.Controllers
                     var result = postTask.Result;
                     if (result.IsSuccessStatusCode)
                     {
-                        ViewBag.Message = "Se registro el IdDepartamento";
+                        ViewBag.Message = "Se registro el Departamento";
                         return PartialView("Modal");
                     }
                     else
                     {
-                        ViewBag.Message = "No se ha registrado el Paciente";
+                        ViewBag.Message = "No se ha registrado el Departamento";
                         return PartialView("Modal");
                     }
 
@@ -158,12 +172,12 @@ namespace PL.Controllers
                     var result = postTask.Result;
                     if (result.IsSuccessStatusCode)
                     {
-                        ViewBag.Message = "Se ha actualizado el Paciente";
+                        ViewBag.Message = "Se ha actualizado ";
                         return PartialView("Modal");
                     }
                     else
                     {
-                        ViewBag.Message = "No se ha registrado el Paciente";
+                        ViewBag.Message = "No se ha registrado el Departamento";
                         return PartialView("Modal");
                     }
 
@@ -174,27 +188,18 @@ namespace PL.Controllers
         [HttpGet]
         public ActionResult Delete(int IdDepartamento)
         {
-
-
-            using (var client = new HttpClient())
+            ML.Empleado empleado = new ML.Empleado();
+            empleado.IdEmpleado = IdDepartamento;
+            ML.Result resultDelete = BL.Departamento.Delete(IdDepartamento);
+            if (resultDelete.Correct == true)
             {
-                client.BaseAddress = new Uri(_configuration["UrlApi"]);
-
-                var postTask = client.GetAsync("Departamento/Delete/" + IdDepartamento);
-                postTask.Wait();
-
-                var result = postTask.Result;
-
-                if (result.IsSuccessStatusCode)
-                {
-                    ViewBag.Message = "Se ha eliminado el libro";
-                    return PartialView("Modal");
-                }
-                else
-                {
-                    ViewBag.Message = "No se ha eliminado el libro";
-                    return PartialView("Modal");
-                }
+                ViewBag.Message = "Se elimino el registro";
+                return PartialView("Modal");
+            }
+            else
+            {
+                ViewBag.Message = "ocurrio un error al eliminar";
+                return PartialView("Modal");
             }
         }
     }
